@@ -1,39 +1,44 @@
-// let stockPriceElement = document.getElementById("stock-price");
-// let ws = new WebSocket("wss://stream.binance.com:9443/ws/btcusdt@trade");
-// ws.onmessage = (event) => {
-//   let stockObject = JSON.parse(event.data);
-//   stockPriceElement.innerText = parseFloat(stockObject.p).toFixed(2);
-//   console.log(stockObject.p);
-// };
-
-// Package requirements
-const WebSocket = require("ws");
-
 // Node.js server requirements
 const express = require("express");
+const socketio = require("socket.io");
 const app = express();
+const path = require("path");
+
+// Configure socket.io server
+const http = require("http");
+const server = http.createServer(app);
+const io = socketio(server);
+
+// Set static folder
+app.use(express.static(path.join(__dirname, "public")));
+
+// Run when client connects
+io.on("connection", (socket) => {
+  binance.websockets.miniTicker((markets) => {
+    socket.emit("markets", markets);
+  });
+});
+
+// Define server port as localhost:3000
+server.listen(3000, () => {
+  console.log(`Server listening on http://localhost:${3000}`);
+});
+
+// Package requirements
+// const WebSocket = require("ws");
 
 // Binance stream
-const ws = new WebSocket(
-  "wss://stream.binance.com/stream?streams=btcusdt@ticker_1h"
-);
+// const ws = new WebSocket(
+//   "wss://stream.binance.com/stream?streams=btcusdt@ticker_1h"
+// );
 
-// Define a new array to add stream data
-let tickerData = [];
-
-// Get data from stream with WebSocket
-ws.on("message", function message(data) {
-  let parsedData = JSON.parse(data);
-  // Add data as json object to use GET API
-  tickerData.push(parsedData);
+// node-binance-api requirements
+const Binance = require("node-binance-api");
+const binance = new Binance().options({
+  APIKEY: process.env.APIKEY,
+  APISECRET: process.env.APISECRET,
 });
 
-// GET API
-app.route("/").get(function (req, res, next) {
-  res.json(tickerData);
-});
-
-// Define server port as localhost:8080
-app.listen(8080, () => {
-  console.log(`Server listening on http://localhost:${8080}`);
+binance.websockets.miniTicker((markets) => {
+  //console.info(markets);
 });
