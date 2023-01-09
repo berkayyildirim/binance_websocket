@@ -38,7 +38,3 @@ const binance = new Binance().options({
   APIKEY: process.env.APIKEY,
   APISECRET: process.env.APISECRET,
 });
-
-binance.websockets.miniTicker((markets) => {
-  //console.info(markets);
-});
