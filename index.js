@@ -24,14 +24,6 @@ server.listen(3000, () => {
   console.log(`Server listening on http://localhost:${3000}`);
 });
 
-// Package requirements
-// const WebSocket = require("ws");
-
-// Binance stream
-// const ws = new WebSocket(
-//   "wss://stream.binance.com/stream?streams=btcusdt@ticker_1h"
-// );
-
 // node-binance-api requirements
 const Binance = require("node-binance-api");
 const binance = new Binance().options({
