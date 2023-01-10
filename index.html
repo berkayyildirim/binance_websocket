@@ -6,5 +6,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
   </head>
-  <body></body>
+  <body>
+    <h1 id="stock-price">btcusdt@ticker_1h</h1>
+    <div class="data">
+      <p id="crypto-name">BTCUSDT</p>
+      <p id="number">---</p>
+      <script>
+        const webSocket = new WebSocket("ws://localhost:8080/");
+
+        function renderData(data) {
+          const number = document.getElementById("number");
+          number.innerHTML = data;
+        }
+
+        webSocket.onmessage = (event) => {
+          const lastPrice = event.data;
+          renderData(lastPrice);
+          console.log(lastPrice);
+        };
+      </script>
+    </div>
+  </body>
 </html>
