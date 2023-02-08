@@ -11,4 +11,5 @@
 -The client listened to the data from our own server and rendered it on the browser by using the WebSocket server (port 8080).
 
 -The sample result is below:
+
 ![Image](/public/websocket.jpg)
